@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple</title>
+</head>
+
+<body>
+
+    <div class="btn-groups">
+        <div class="products">
+        </div>
+    </div>
+    <script>
+        const btnGroups = document.querySelector(".btn-groups")
+        const product = document.querySelector(".products")
+
+        fetch("https://fakestoreapi.com/products/categories")
+            .then(response => response.json())
+            .then(result => {
+                result.forEach(categoryName => {
+                    let button = document.createElement("button")
+                    button.innerText = categoryName
+                    button.classList.add("btn-link");
+                    button.onclick = clickFunc;
+                    button.setAttribute("data-link", "https://fakestoreapi.com/products/category/" + categoryName)
+                    btnGroups.appendChild(button)
+                });
+
+            })
+        clickFunc = (el) => {
+            let btn = el.srcElement;
+            btn.getAttribute("data-link")
+                .then(response => response.json())
+                .then(result =>
+                    result.forEach(product => {
+                        let title = document.createElement("h3");
+                        title.classList.add("product-title");
+                        title.innerText = product.title;
+                        let image = document.createElement("img");
+                        image.classList.add("product-image");
+                        image.src = product.image;
+                        let box = document.createElement("div");
+                        box.classList.add("product");
+                        box.appendChild(title)
+                        box.appendChild(image)
+                        product.appendChild(box)
+
+                    }));
+        }
+    </script>
+
+</body>
+
+</html>
